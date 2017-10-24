@@ -1,10 +1,10 @@
 <?php
 
-namespace Taskaholic\Core\Domain\UseCase;
+namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
 use Taskaholic\Core\Domain\Repository\UserRepositoryInterface;
-use Taskaholic\Core\Domain\Request\GetUserRequest;
-use Taskaholic\Core\Domain\Response\GetUserResponse;
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserResponse;
 
 
 class GetUserUseCase

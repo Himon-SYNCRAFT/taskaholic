@@ -1,8 +1,9 @@
 <?php
 
 
-use Taskaholic\Core\Domain\Request\GetUserRequest;
-use Taskaholic\Core\Domain\UseCase\GetUserUseCase;
+use Taskaholic\Core\Domain\Entity\User;
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserUseCase;
 
 
 describe('GetUserUseCase', function() {
@@ -13,17 +14,16 @@ describe('GetUserUseCase', function() {
             );
         });
 
-        it('should return an User object', function() {
-            $user = [
-                'userId' => 1
-            ];
-            $this->userRepository->get($user['userId'])->willReturn($user);
+        it('should return an response object', function() {
+            $userId = 1;
+            $user = new User($userId);
+            $this->userRepository->get($userId)->willReturn($user);
 
-            $request = new GetUserRequest($user['userId']);
+            $request = new GetUserRequest($userId);
             $useCase = new GetUserUseCase($this->userRepository->reveal());
             $response = $useCase->execute($request);
 
-            expect($response->getUser())->to->equal($user);
+            expect($response->getUser()->id)->to->equal($user->getId());
         });
     });
 });

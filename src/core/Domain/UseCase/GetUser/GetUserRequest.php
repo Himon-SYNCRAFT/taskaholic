@@ -1,6 +1,6 @@
 <?php
 
-namespace Taskaholic\Core\Domain\Request;
+namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
 
 class GetUserRequest
