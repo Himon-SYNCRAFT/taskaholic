@@ -39,4 +39,12 @@ class User implements EntityInterface
             'name' => $this->name,
         ];
     }
+
+    public static function fromArray($data)
+    {
+        return new User(
+            $data['name'],
+            $data['id']
+        );
+    }
 }

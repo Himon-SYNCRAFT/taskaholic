@@ -19,6 +19,7 @@ return function(EventEmitterInterface $emitter) {
     $watcher = new WatcherPlugin($emitter);
     $watcher->setEvents([WatcherInterface::ALL_EVENT]);
     $watcher->track(__DIR__ . '/src');
+    $watcher->track(__DIR__ . '/app');
 
     new ProphecyPlugin($emitter);
 };

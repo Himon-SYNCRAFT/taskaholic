@@ -12,7 +12,7 @@
         "psr-4": {
             "Taskaholic\\Core\\": ["src/core"],
             "Taskaholic\\Api\\": ["app/api"],
-            "Taskaholic\\Data\\": ["app/data"]
+            "Taskaholic\\Data\\": "app/data"
         }
     },
     "require": {
