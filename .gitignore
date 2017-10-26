@@ -6,3 +6,4 @@ composer
 composer.phar
 tags
 .tags
+tags.vendors
