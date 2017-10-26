@@ -4,3 +4,5 @@
 .env
 composer
 composer.phar
+tags
+.tags

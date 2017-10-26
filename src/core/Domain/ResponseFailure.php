@@ -20,4 +20,9 @@ class ResponseFailure
     {
         return $this->errors;
     }
+
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+    }
 }

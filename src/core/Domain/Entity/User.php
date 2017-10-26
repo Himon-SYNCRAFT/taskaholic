@@ -2,17 +2,41 @@
 
 namespace Taskaholic\Core\Domain\Entity;
 
+use Taskaholic\Core\Domain\Entity\EntityInterface;
 
-class User
+
+class User implements EntityInterface
 {
-    private $id;
+    protected $id;
+    protected $name;
 
-    public function __construct(int $userId)
+    public function __construct(String $name, int $userId = null)
     {
         $this->id = $userId;
+        $this->name = $name;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+        ];
     }
 }

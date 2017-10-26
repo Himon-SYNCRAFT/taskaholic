@@ -12,7 +12,8 @@ class GetUserRequest
         $this->userId = $userId;
     }
 
-    public function getUserId() {
+    public function getUserId()
+    {
         return $this->userId;
     }
 }
