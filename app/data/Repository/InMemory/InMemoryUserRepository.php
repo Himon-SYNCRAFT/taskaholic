@@ -4,10 +4,13 @@ namespace Taskaholic\Data\Repository\InMemory;
 
 use Taskaholic\Core\Domain\Entity\User;
 use Taskaholic\Core\Domain\Repository\UserRepositoryInterface;
+use Taskaholic\Core\Collection\EntityCollection;
 
 
 class InMemoryUserRepository implements UserRepositoryInterface
 {
+    private $items;
+
     public function __construct($items = [])
     {
         $this->items = $items;
@@ -41,7 +44,8 @@ class InMemoryUserRepository implements UserRepositoryInterface
             }
         }
 
-        return $result;
+        $collection =  new EntityCollection($result);
+        return $collection;
     }
 
     public function all()
@@ -52,7 +56,7 @@ class InMemoryUserRepository implements UserRepositoryInterface
             $result[] = $this->toDomainModel($item);
         }
 
-        return $result;
+        return new EntityCollection($result);
     }
 
     private function toDomainModel($item)

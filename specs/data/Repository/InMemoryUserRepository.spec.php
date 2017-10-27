@@ -1,14 +1,14 @@
 <?php
 
+use Taskaholic\Core\Domain\Entity\User;
 use Taskaholic\Data\Repository\InMemory\InMemoryUserRepository;
 
+$user1 = ['id' => 1, 'name' => 'user'];
+$user2 = ['id' => 2, 'name' => 'user'];
 
-describe('InMemoryUserRepository', function() {
-    beforeEach(function() {
-        $this->repository = new InMemoryUserRepository([
-            ['id' => 1, 'name' => 'user'],
-            ['id' => 2, 'name' => 'user'],
-        ]);
+describe('InMemoryUserRepository', function() use ($user1, $user2) {
+    beforeEach(function() use ($user1, $user2) {
+        $this->repository = new InMemoryUserRepository([$user1, $user2]);
     });
 
     describe('->get()', function() {
@@ -23,25 +23,18 @@ describe('InMemoryUserRepository', function() {
         });
     });
 
-    describe('->find()', function() {
-        it('return array of Users entities if match given filter', function() {
+    describe('->find()', function() use($user1, $user2) {
+        it('return collection of Users entities if match given filter', function() use($user1, $user2) {
             $filter = [['parameter' => 'name', 'value' => 'user']];
 
             $users = $this->repository->find($filter);
-            $usersArray = [];
 
-            foreach ($users as $user) {
-                $usersArray[] = $user->toArray();
+            expect($users->every(function($user) {
+                return $user instanceof User;
+            }));
 
-                expect($user)->to->be
-                    ->instanceof('Taskaholic\Core\Domain\Entity\User');
-            }
-
-            expect($usersArray)->to->be
-                ->equal([
-                    ['id' => 1, 'name' => 'user'],
-                    ['id' => 2, 'name' => 'user'],
-                ]);
+            expect($users->contains(User::fromArray($user1)))->to->equal(true);
+            expect($users->contains(User::fromArray($user2)))->to->equal(true);
         });
     });
 });

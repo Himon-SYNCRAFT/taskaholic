@@ -1,11 +1,19 @@
 <?php
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use \Psr\Http\Message\ResponseInterface as HttpResponse;
+use \Psr\Http\Message\ServerRequestInterface as HttpRequest;
 
 require 'vendor/autoload.php';
 
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
+use Taskaholic\Core\Domain\UseCase\GetUser\GetUserUseCase;
 use Taskaholic\Data\Repository\InMemory\InMemoryUserRepository;
+
+
+$userRepository = new InMemoryUserRepository([
+    ['id' => 1, 'name' => 'user'],
+    ['id' => 2, 'name' => 'user2']
+]);
 
 $config = [
     'settings' => [
@@ -14,21 +22,11 @@ $config = [
 ];
 
 $app = new \Slim\App($config);
-$app->get('/', function(Request $request, Response $response) {
-    $repository = new InMemoryUserRepository([
-        ['id' => 1, 'name' => 'user']
-    ]);
 
-    $user = $repository->get(1);
+$app->get('/users/find', function(HttpRequest $httpRequest, HttpResponse $httpResponse) use ($userRepository) {
+    $data = $httpRequest->getParsedBody();
 
-    $response->getBody()->write(print_r($user, true));
-    return $response;
-});
-
-$app->get('/users/find', function(Request $request, Response $response){
-    $data = $request->getParsedBody();
-
-    foreach ($request->getQueryParams() as $key => $param) {
+    foreach ($httpRequest->getQueryParams() as $key => $param) {
         $data[$key] = $param;
     }
 
@@ -44,27 +42,23 @@ $app->get('/users/find', function(Request $request, Response $response){
         $filter[] = ['parameter' => 'name', 'value' => $name];
     }
 
-    $repository = new InMemoryUserRepository([
-        ['id' => 1, 'name' => 'user'],
-        ['id' => 2, 'name' => 'user2']
-    ]);
-
     $users = $repository->find($filter);
 
-    $response->getBody()->write(print_r($users, true));
+    $httpResponse->getBody()->write(print_r($users, true));
 });
 
-$app->get('/users/{id}', function(Request $request, Response $response, $args){
+$app->get('/users/{id}', function(HttpRequest $httpRequest, HttpResponse $httpResponse, $args) use ($userRepository) {
     $userId = (int)$args['id'] ?? null;
 
-    $repository = new InMemoryUserRepository([
-        ['id' => 1, 'name' => 'user'],
-        ['id' => 2, 'name' => 'user2']
-    ]);
+    $request = new GetUserRequest($userId);
+    $useCase = new GetUserUseCase($userRepository);
+    $response = $useCase->execute($request);
 
-    $user = $repository->get($userId);
+    $httpResponse->getBody()->write(print_r($response, true));
+});
 
-    $response->getBody()->write(print_r($user, true));
+$app->get('/', function(HttpRequest $httpRequest, HttpResponse $httpResponse) {
+    $httpResponse->getBody()->write('home');
 });
 
 
