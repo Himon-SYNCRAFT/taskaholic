@@ -32,15 +32,21 @@ class InMemoryUserRepository implements UserRepositoryInterface
         $result = [];
 
         foreach ($this->items as $item) {
+            $itemMatchFilter = true;
+
             foreach ($filters as $filter) {
                 $parameter = $filter['parameter'];
                 $value = $filter['value'];
 
                 $parameterExists = array_key_exists($parameter, $item);
 
-                if ($parameterExists && $item[$parameter] === $value) {
-                    $result[] = $this->toDomainModel($item);
+                if (!$parameterExists || $item[$parameter] !== $value) {
+                    $itemMatchFilter = false;
                 }
+            }
+
+            if ($itemMatchFilter) {
+                $result[] = $this->toDomainModel($item);
             }
         }
 

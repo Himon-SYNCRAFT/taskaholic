@@ -25,7 +25,10 @@ describe('InMemoryUserRepository', function() use ($user1, $user2) {
 
     describe('->find()', function() use($user1, $user2) {
         it('return collection of Users entities if match given filter', function() use($user1, $user2) {
-            $filter = [['parameter' => 'name', 'value' => 'user']];
+            $filter = [
+                ['parameter' => 'name', 'value' => 'user'],
+                ['parameter' => 'id', 'value' => 1],
+            ];
 
             $users = $this->repository->find($filter);
 
@@ -33,8 +36,9 @@ describe('InMemoryUserRepository', function() use ($user1, $user2) {
                 return $user instanceof User;
             }));
 
+            expect($users->length())->to->equal(1);
             expect($users->contains(User::fromArray($user1)))->to->equal(true);
-            expect($users->contains(User::fromArray($user2)))->to->equal(true);
+            expect($users->contains(User::fromArray($user2)))->to->equal(false);
         });
     });
 });

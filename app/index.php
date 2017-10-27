@@ -5,6 +5,8 @@ use \Psr\Http\Message\ServerRequestInterface as HttpRequest;
 
 require 'vendor/autoload.php';
 
+use Taskaholic\Core\Domain\UseCase\FindUsers\FindUsersRequest;
+use Taskaholic\Core\Domain\UseCase\FindUsers\FindUsersUseCase;
 use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
 use Taskaholic\Core\Domain\UseCase\GetUser\GetUserUseCase;
 use Taskaholic\Data\Repository\InMemory\InMemoryUserRepository;
@@ -12,7 +14,7 @@ use Taskaholic\Data\Repository\InMemory\InMemoryUserRepository;
 
 $userRepository = new InMemoryUserRepository([
     ['id' => 1, 'name' => 'user'],
-    ['id' => 2, 'name' => 'user2']
+    ['id' => 2, 'name' => 'user']
 ]);
 
 $config = [
@@ -42,9 +44,12 @@ $app->get('/users/find', function(HttpRequest $httpRequest, HttpResponse $httpRe
         $filter[] = ['parameter' => 'name', 'value' => $name];
     }
 
-    $users = $repository->find($filter);
+    $request = new FindUsersRequest($filter);
+    $useCase = new FindUsersUseCase($userRepository);
+    $response = $useCase->execute($request);
+    $users = $response->getUsers();
 
-    $httpResponse->getBody()->write(print_r($users, true));
+    return $httpResponse->withJson($users);
 });
 
 $app->get('/users/{id}', function(HttpRequest $httpRequest, HttpResponse $httpResponse, $args) use ($userRepository) {
@@ -53,8 +58,9 @@ $app->get('/users/{id}', function(HttpRequest $httpRequest, HttpResponse $httpRe
     $request = new GetUserRequest($userId);
     $useCase = new GetUserUseCase($userRepository);
     $response = $useCase->execute($request);
+    $user = $response->getUser();
 
-    $httpResponse->getBody()->write(print_r($response, true));
+    return $httpResponse->withJson($user);
 });
 
 $app->get('/', function(HttpRequest $httpRequest, HttpResponse $httpResponse) {

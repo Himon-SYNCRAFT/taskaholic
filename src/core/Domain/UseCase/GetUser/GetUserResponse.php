@@ -12,12 +12,11 @@ class GetUserResponse
 
     public function __construct(User $user)
     {
-        $this->user = new stdClass();
-        $this->user->id = $user->getId();
+        $this->user = $user->toArray();
     }
 
     public function getUser()
     {
-        return clone $this->user;
+        return $this->user;
     }
 }

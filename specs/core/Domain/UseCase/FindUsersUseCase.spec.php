@@ -1,6 +1,6 @@
 <?php
 
-use Taskaholic\Core\Collection\Collection;
+use DusanKasan\Knapsack\Collection;
 use Taskaholic\Core\Domain\Entity\User;
 use Taskaholic\Core\Domain\UseCase\FindUsers\FindUsersRequest;
 use Taskaholic\Core\Domain\UseCase\FindUsers\FindUsersResponse;
@@ -25,14 +25,12 @@ describe('FindUsersUseCase', function() use ($user1, $user2) {
             $request = new FindUsersRequest($filters);
 
             $response = $useCase->execute($request);
-            $users = $response->getUsers();
+            expect($response->getUsers())->to->have->length(2);
 
-            expect($users->every(function($user) {
-                return $user instanceof User;
-            }))->to->equal(true);
+            $users = Collection::from($response->getUsers());
 
-            expect($users->contains(User::fromArray($user1)))->to->equal(true);
-            expect($users->contains(User::fromArray($user2)))->to->equal(true);
+            expect($users->contains($user1))->to->equal(true);
+            expect($users->contains($user2))->to->equal(true);
         });
     });
 });

@@ -12,4 +12,5 @@ interface CollectionInterface
     public function toArray($itemsToArray = true);
     public function every(callable $function);
     public function contains(EntityInterface $needle);
+    public function length();
 }

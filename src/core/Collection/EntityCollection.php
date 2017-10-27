@@ -29,7 +29,7 @@ class EntityCollection implements CollectionInterface
         if ($itemsToArray) {
             return $this->items->map(function($item) {
                 return $item->toArray();
-            });
+            })->toArray();
         }
 
         return $this->items->toArray();
@@ -44,5 +44,9 @@ class EntityCollection implements CollectionInterface
         return $this->has(function($item) use ($needle) {
             return $item->toArray() == $needle->toArray();
         });
+    }
+
+    public function length() {
+        return $this->items->size();
     }
 }

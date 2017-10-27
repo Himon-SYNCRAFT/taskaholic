@@ -24,7 +24,7 @@ describe('GetUserUseCase', function() {
             $useCase = new GetUserUseCase($this->userRepository->reveal());
             $response = $useCase->execute($request);
 
-            expect($response->getUser()->id)->to->equal($user->getId());
+            expect($response->getUser()['id'])->to->equal($user->getId());
         });
 
         it('should return ResponseFailure if object was not found', function(){
