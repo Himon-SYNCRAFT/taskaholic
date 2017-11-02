@@ -17,7 +17,8 @@
     },
     "require": {
         "slim/slim": "^3.8",
-        "dusank/knapsack": "^10.0"
+        "dusank/knapsack": "^10.0",
+        "respect/validation": "^1.1"
     },
     "require-dev": {
         "peridot-php/peridot": "^1.19",

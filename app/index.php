@@ -47,7 +47,7 @@ $app->get('/users/find', function(HttpRequest $httpRequest, HttpResponse $httpRe
     $request = new FindUsersRequest($filter);
     $useCase = new FindUsersUseCase($userRepository);
     $response = $useCase->execute($request);
-    $users = $response->getUsers();
+    $users = $response->getData();
 
     return $httpResponse->withJson($users);
 });
@@ -58,7 +58,7 @@ $app->get('/users/{id}', function(HttpRequest $httpRequest, HttpResponse $httpRe
     $request = new GetUserRequest($userId);
     $useCase = new GetUserUseCase($userRepository);
     $response = $useCase->execute($request);
-    $user = $response->getUser();
+    $user = $response->getData();
 
     return $httpResponse->withJson($user);
 });

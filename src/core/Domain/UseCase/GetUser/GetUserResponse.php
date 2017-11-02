@@ -2,21 +2,39 @@
 
 namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
-use \stdClass;
 use Taskaholic\Core\Domain\Entity\User;
+use Taskaholic\Core\Domain\ResponseInterface;
 
 
-class GetUserResponse
+class GetUserResponse implements ResponseInterface
 {
     protected $user;
+    protected $errors;
 
-    public function __construct(User $user)
+    public function __construct(User $user = null)
     {
-        $this->user = $user->toArray();
+        $this->errors = [];
+
+        if ($user) {
+            $this->user = $user->toArray();
+        }
     }
 
-    public function getUser()
+    public function getData()
     {
         return $this->user;
+    }
+
+    public function hasErrors() {
+        return count($this->errors) > 0;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function addError($error) {
+        $this->errors[] = $error;
     }
 }

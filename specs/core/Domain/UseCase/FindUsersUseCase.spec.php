@@ -25,9 +25,9 @@ describe('FindUsersUseCase', function() use ($user1, $user2) {
             $request = new FindUsersRequest($filters);
 
             $response = $useCase->execute($request);
-            expect($response->getUsers())->to->have->length(2);
+            expect($response->getData())->to->have->length(2);
 
-            $users = Collection::from($response->getUsers());
+            $users = Collection::from($response->getData());
 
             expect($users->contains($user1))->to->equal(true);
             expect($users->contains($user2))->to->equal(true);
