@@ -3,7 +3,7 @@
 namespace Taskaholic\Core\Domain\UseCase\FindUsers;
 
 use Taskaholic\Core\Collection\EntityCollection;
-use Taskaholic\Core\Domain\ResponseInterface;
+use Taskaholic\Core\Domain\Response\ResponseInterface;
 
 
 class FindUsersResponse implements ResponseInterface

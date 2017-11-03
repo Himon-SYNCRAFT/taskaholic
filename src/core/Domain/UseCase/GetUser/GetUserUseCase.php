@@ -6,7 +6,7 @@ use Taskaholic\Core\Domain\Repository\UserRepositoryInterface;
 use Taskaholic\Core\Domain\ResponseFailure;
 use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
 use Taskaholic\Core\Domain\UseCase\GetUser\GetUserResponse;
-use Taskaholic\Core\Domain\ValidationInterface;
+use Taskaholic\Core\Domain\Validation\ValidationInterface;
 
 
 class GetUserUseCase

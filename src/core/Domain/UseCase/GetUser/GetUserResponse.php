@@ -3,7 +3,7 @@
 namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
 use Taskaholic\Core\Domain\Entity\User;
-use Taskaholic\Core\Domain\ResponseInterface;
+use Taskaholic\Core\Domain\Response\ResponseInterface;
 
 
 class GetUserResponse implements ResponseInterface

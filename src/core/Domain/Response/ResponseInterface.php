@@ -1,6 +1,6 @@
 <?php
 
-namespace Taskaholic\Core\Domain;
+namespace Taskaholic\Core\Domain\Response;
 
 
 interface ResponseInterface

@@ -2,9 +2,9 @@
 
 namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
-use Respect\Validation\Validator;
-use Taskaholic\Core\Domain\ValidationInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Validator;
+use Taskaholic\Core\Domain\Validation\ValidationInterface;
 
 
 class GetUserValidation implements ValidationInterface
