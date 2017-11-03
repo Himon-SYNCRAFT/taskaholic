@@ -17,11 +17,12 @@ class FindUsersValidation implements ValidationInterface
         $this->validator = V::attribute(
             'filters',
             V::arrayType()->each(
-                V::key(
-                    'parameter',
-                    V::in(['id', 'name'])
+                V::oneOf(
+                    V::key('parameter', V::equals('id'))
+                    ->key('value', V::intVal()),
+                    V::key('parameter', V::equals('name'))
+                    ->key('value', V::alpha())
                 )
-                ->key('value')
             )
         );
 
@@ -34,12 +35,13 @@ class FindUsersValidation implements ValidationInterface
             $this->validator->assert($data);
             return true;
         } catch (NestedValidationException $e) {
-            $this->errors = $e->getMessages();
+            $this->errors = $e->getFullMessage();
             return false;
         }
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
 }

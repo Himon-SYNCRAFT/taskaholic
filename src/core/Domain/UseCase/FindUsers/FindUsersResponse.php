@@ -37,6 +37,12 @@ class FindUsersResponse implements ResponseInterface
 
     public function addError($error)
     {
-        $this->errors[] = $error;
+        if (is_array($error)) {
+            foreach ($error as $err) {
+                $this->errors[] = $err;
+            }
+        } else {
+            $this->errors[] = $error;
+        }
     }
 }
