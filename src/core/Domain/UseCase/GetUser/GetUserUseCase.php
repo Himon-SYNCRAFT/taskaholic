@@ -12,8 +12,9 @@ use Taskaholic\Core\Domain\Validation\ValidationInterface;
 class GetUserUseCase
 {
     protected $userRepository;
+    protected $validation;
 
-    public function __construct(UserRepositoryInterface $userRepository, ValidationInterface $validation = null)
+    public function __construct(UserRepositoryInterface $userRepository, ValidationInterface $validation)
     {
         $this->userRepository = $userRepository;
         $this->validation = $validation;
@@ -21,17 +22,13 @@ class GetUserUseCase
 
     public function execute(GetUserRequest $request)
     {
-        $userId = $request->getUserId();
-
-        if (!$this->validation->validate($userId)) {
+        if (!$this->validation->validate($request)) {
             $response = new GetUserResponse();
-
-            foreach ($this->validation->getErrors() as $error) {
-                $response->addError($error);
-            }
-
+            $response->addError($this->validation->getErrors());
             return $response;
         }
+
+        $userId = $request->getUserId();
 
         $user = $this->userRepository->get($userId);
         $userNotFound = $user === null;

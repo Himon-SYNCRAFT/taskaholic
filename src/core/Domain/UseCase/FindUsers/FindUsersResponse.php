@@ -11,10 +11,13 @@ class FindUsersResponse implements ResponseInterface
     protected $users;
     protected $errors;
 
-    public function __construct(EntityCollection $users)
+    public function __construct(EntityCollection $users = null)
     {
         $this->errors = [];
-        $this->users = $users->toArray();
+
+        if ($users) {
+            $this->users = $users->toArray();
+        }
     }
 
     public function getData()

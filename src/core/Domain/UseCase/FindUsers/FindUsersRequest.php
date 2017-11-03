@@ -7,9 +7,9 @@ class FindUsersRequest
 {
     private $filters;
 
-    public function __construct($filters = [])
+    public function __construct($data = [])
     {
-        $this->filters = $filters;
+        $this->filters = $data['filters'] ?? null;
     }
 
     public function getFilters()

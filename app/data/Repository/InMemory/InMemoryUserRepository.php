@@ -40,7 +40,7 @@ class InMemoryUserRepository implements UserRepositoryInterface
 
                 $parameterExists = array_key_exists($parameter, $item);
 
-                if (!$parameterExists || $item[$parameter] !== $value) {
+                if (!$parameterExists || $item[$parameter] != $value) {
                     $itemMatchFilter = false;
                 }
             }

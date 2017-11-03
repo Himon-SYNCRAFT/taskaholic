@@ -1,23 +1,31 @@
 <?php
 
-namespace Taskaholic\Core\Domain\UseCase\GetUser;
+namespace Taskaholic\Core\Domain\UseCase\FindUsers;
 
 use Respect\Validation\Exceptions\NestedValidationException;
-use Respect\Validation\Validator;
+use Respect\Validation\Validator as V;
 use Taskaholic\Core\Domain\Validation\ValidationInterface;
 
 
-class GetUserValidation implements ValidationInterface
+class FindUsersValidation implements ValidationInterface
 {
+    protected $validator;
     protected $errors;
 
     public function __construct()
     {
-        $this->errors = [];
-        $this->validator = Validator::Attribute(
-            'userId',
-            Validator::intVal()->positive()
+        $this->validator = V::attribute(
+            'filters',
+            V::arrayType()->each(
+                V::key(
+                    'parameter',
+                    V::in(['id', 'name'])
+                )
+                ->key('value')
+            )
         );
+
+        $this->errors = [];
     }
 
     public function validate($data)
@@ -31,8 +39,7 @@ class GetUserValidation implements ValidationInterface
         }
     }
 
-    public function getErrors()
-    {
+    public function getErrors() {
         return $this->errors;
     }
 }
