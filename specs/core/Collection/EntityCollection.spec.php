@@ -6,9 +6,20 @@ use Taskaholic\Core\Domain\Entity\User;
 
 describe('EntityCollection', function() {
     beforeEach(function() {
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+
         $this->users = [
-            User::fromArray(['id' => 1, 'name' => 'user']),
-            User::fromArray(['id' => 2, 'name' => 'user']),
+            User::fromArray([
+                'id' => 1,
+                'name' => 'user',
+                'passwordHash' => $passwordHash
+            ]),
+
+            User::fromArray([
+                'id' => 2,
+                'name' => 'user',
+                'passwordHash' => $passwordHash
+            ]),
         ];
 
         $this->collection = new EntityCollection(

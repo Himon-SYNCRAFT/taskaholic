@@ -44,4 +44,27 @@ describe('User', function() {
             ]);
         });
     });
+
+    describe('checkPassword', function() {
+        it('return true if password is correct', function() {
+            $name = 'user';
+            $password = 'user';
+            $userId = 1;
+            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+            $user = new User($name, $userId, $passwordHash);
+
+            expect($user->checkPassword($password))->to->be->true();
+        });
+
+        it('return false if password is incorrect', function() {
+            $name = 'user';
+            $password = 'user';
+            $incorrectPassword = 'User';
+            $userId = 1;
+            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+            $user = new User($name, $userId, $passwordHash);
+
+            expect($user->checkPassword($incorrectPassword))->to->be->false();
+        });
+    });
 });

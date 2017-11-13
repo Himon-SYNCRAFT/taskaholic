@@ -9,11 +9,13 @@ class User implements EntityInterface
 {
     protected $id;
     protected $name;
+    protected $passwordHash;
 
-    public function __construct(String $name, int $userId = null)
+    public function __construct(String $name, int $userId = null, String $passwordHash = null)
     {
         $this->id = $userId;
         $this->name = $name;
+        $this->passwordHash = $passwordHash;
     }
 
     public function getId()
@@ -32,6 +34,11 @@ class User implements EntityInterface
         return $this;
     }
 
+    public function checkPassword($password)
+    {
+        return password_verify($password, $this->passwordHash);
+    }
+
     public function toArray()
     {
         return [
@@ -44,7 +51,8 @@ class User implements EntityInterface
     {
         return new User(
             $data['name'],
-            $data['id']
+            $data['id'],
+            $data['passwordHash']
         );
     }
 }
