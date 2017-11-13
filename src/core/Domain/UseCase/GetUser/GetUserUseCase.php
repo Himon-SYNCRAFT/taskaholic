@@ -2,6 +2,9 @@
 
 namespace Taskaholic\Core\Domain\UseCase\GetUser;
 
+use Taskaholic\Core\Domain\Exceptions\AuthorizationError;
+use Taskaholic\Core\Domain\Exceptions\DataAccessError;
+use Taskaholic\Core\Domain\Exceptions\ValidationError;
 use Taskaholic\Core\Domain\Repository\UserRepositoryInterface;
 use Taskaholic\Core\Domain\ResponseFailure;
 use Taskaholic\Core\Domain\UseCase\GetUser\GetUserRequest;
@@ -22,25 +25,39 @@ class GetUserUseCase
 
     public function execute(GetUserRequest $request)
     {
-        if (!$this->validation->validate($request)) {
+        try {
+            $this->validation->validate($request);
+
+            $userId = $request->getUserId();
+
+            $user = $this->userRepository->get($userId);
+            $userNotFound = $user === null;
+
+            if ($userNotFound) {
+                $error = "User with id $userId not found";
+                $response = new GetUserResponse();
+                $response->addError($error);
+                return $response;
+            }
+
+            $response = new GetUserResponse($user);
+            return $response;
+        } catch (ValidationError $e) {
             $response = new GetUserResponse();
             $response->addError($this->validation->getErrors());
             return $response;
-        }
-
-        $userId = $request->getUserId();
-
-        $user = $this->userRepository->get($userId);
-        $userNotFound = $user === null;
-
-        if ($userNotFound) {
-            $error = "User with id $userId not found";
+        } catch (AuthorizationError $e) {
             $response = new GetUserResponse();
-            $response->addError($error);
+            $response->addError($e);
+            return $response;
+        } catch (DataAccessError $e) {
+            $response = new GetUserResponse();
+            $response->addError($e);
+            return $response;
+        } catch (Throwable $e) {
+            $response = new GetUserResponse();
+            $response->addError($e);
             return $response;
         }
-
-        $response = new GetUserResponse($user);
-        return $response;
     }
 }
