@@ -49,10 +49,14 @@ class User implements EntityInterface
 
     public static function fromArray($data)
     {
+        $name = $data['name'] ?? null;
+        $id = $data['id'] ?? null;
+        $passwordHash = $data['passwordHash'] ?? null;
+
         return new User(
-            $data['name'],
-            $data['id'],
-            $data['passwordHash']
+            $name,
+            $id,
+            $passwordHash
         );
     }
 }
